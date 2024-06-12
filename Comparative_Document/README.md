@@ -134,7 +134,7 @@ The choice of container solution depends on your specific needs, management pref
 
 ## ✅ Ressources
 
-▶️ [PDF Document](export/container_solutions_comparaison.pdf) 
+▶️ [PDF Document](https://github.com/emmanuel-colussi-sonarsource/Container_Architecture/blob/main/Comparative_Document/export/container_solutions_comparison.pdf) 
 
 ▶️ [AWS ECS](https://docs.aws.amazon.com/ecs/)
 
