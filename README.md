@@ -1,3 +1,5 @@
+![logo](imgs/container-archi.png) 
+
 # Container Architectures and SonarQube Deployment Examples
 
 Welcome to the **Container Architectures and SonarQube Deployment Examples** repository! This repository provides an overview of various container architectures and offers detailed examples of deploying SonarQube with different configurations.
@@ -15,15 +17,5 @@ This repository aims to:
 
 ## Contents
 
-- **Architecture Overviews**: Detailed explanations of different container architectures, including Docker, Kubernetes, and Docker Swarm.
-- **Deployment Examples**: Step-by-step guides to deploying SonarQube using:
-  - Docker
-  - Docker Compose
-  - Kubernetes
-  - Docker Swarm
-- **Configuration Options**: Information on various SonarQube configurations, including:
-  - Database settings
-  - Environment variables
-  - Volume management
-  - Network configurations
+- **Architecture Overviews**: Detailed explanations of various container architectures across different cloud providers
 
