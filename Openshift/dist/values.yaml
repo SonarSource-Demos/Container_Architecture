@@ -1,0 +1,75 @@
+OpenShift:
+  enabled: true
+  createSCC: true
+
+edition: "enterprise"
+
+serviceAccount:
+  create: true
+
+initSysctl:
+  enabled: false
+
+securityContext:
+  fsGroup: 1000670000
+
+containerSecurityContext:
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  runAsUser: 1000670000
+  runAsGroup: null
+  capabilities:
+      drop: ["ALL"]
+
+initFs:
+  enabled: false
+
+initContainers:
+   securityContext:
+     allowPrivilegeEscalation: false
+     runAsNonRoot: true
+     runAsUser: 1000670000
+     runAsGroup: 1000670000
+     seccompProfile:
+       type: RuntimeDefault
+     capabilities:
+       drop: ["ALL"]
+       add: []
+   
+postgresql:
+  enabled: false
+
+jdbcOverwrite:
+  enable: true
+  jdbcUrl: "jdbc:postgresql://postgres-service.database01.svc.cluster.local:5432/sonarqube15?socketTimeout=1500"
+  jdbcUsername: "sonarqube"
+  jdbcSecretName: sonarqube-jdbc
+  jdbcSecretPasswordKey: jdbc-password 
+  
+persistence:
+  enabled: true
+  existingClaim: sonarqube-data
+
+additionalVolumeMounts:
+  - name: sonarqube-extensions
+    mountPath: /opt/sonarqube/extensions
+  - name: sonarqube-data
+    mountPath: /opt/sonarqube/data
+  - name: sonarqube-logs
+    mountPath: /opt/sonarqube/logs 
+
+additionalVolumes:
+  - name: sonarqube-extensions
+    persistentVolumeClaim:
+      claimName: sonarqube-extensions
+  - name: sonarqube-data
+    persistentVolumeClaim:
+      claimName: sonarqube-data
+  - name: sonarqube-logs
+    persistentVolumeClaim:
+      claimName: sonarqube-logs
+
+service:
+  type: NodePort
+  externalPort: 9000
+  internalPort: 9000

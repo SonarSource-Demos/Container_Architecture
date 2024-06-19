@@ -134,29 +134,29 @@ The choice of container solution depends on your specific needs, management pref
 
 ## ✅ Ressources
 
-▶️ [PDF Document](https://github.com/emmanuel-colussi-sonarsource/Container_Architecture/blob/main/Comparative_Document/export/container_solutions_comparison.pdf) 
+🔗 [PDF Document](https://github.com/emmanuel-colussi-sonarsource/Container_Architecture/blob/main/Comparative_Document/export/container_solutions_comparison.pdf) 
 
-▶️ [AWS ECS](https://docs.aws.amazon.com/ecs/)
+🔗 [AWS ECS](https://docs.aws.amazon.com/ecs/)
 
-▶️ [AWS ECS Fargate](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html)
+🔗 [AWS ECS Fargate](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html)
 
-▶️ [Sonarqube on AWS ECS Fargate](https://github.com/colussim/AWS_ECS_FARGATE_SONARQUBE)
+🔗 [Sonarqube on AWS ECS Fargate](https://github.com/colussim/AWS_ECS_FARGATE_SONARQUBE)
 
-▶️ [AWS EKS](https://docs.aws.amazon.com/eks/)
+🔗 [AWS EKS](https://docs.aws.amazon.com/eks/)
 
-▶️ [Azure AKS](https://learn.microsoft.com/en-us/azure/aks/)
+🔗 [Azure AKS](https://learn.microsoft.com/en-us/azure/aks/)
 
-▶️ [Azure ACI](https://learn.microsoft.com/en-us/azure/container-instances/)
+🔗 [Azure ACI](https://learn.microsoft.com/en-us/azure/container-instances/)
 
-▶️ [Google GKE](https://cloud.google.com/kubernetes-engine/docs)
+🔗 [Google GKE](https://cloud.google.com/kubernetes-engine/docs)
 
-▶️ [Google GCP Cloud Run](https://cloud.google.com/run/docs)
+🔗 [Google GCP Cloud Run](https://cloud.google.com/run/docs)
 
-▶️ [OpenShift Container Platform](https://docs.openshift.com/container-platform/4.15/welcome/index.html)
+🔗 [OpenShift Container Platform](https://docs.openshift.com/container-platform/4.15/welcome/index.html)
 
-▶️ [OpenShift Kubernetes](https://docs.openshift.com/container-platform/4.15/welcome/oke_about.html)
+🔗 [OpenShift Kubernetes](https://docs.openshift.com/container-platform/4.15/welcome/oke_about.html)
 
-▶️ [OpenShift Documentation](https://docs.openshift.com/)
+🔗 [OpenShift Documentation](https://docs.openshift.com/)
 
 
 -----
