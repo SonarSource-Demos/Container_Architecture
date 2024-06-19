@@ -1,4 +1,4 @@
-![logo](imgs/openshiftworload.png) 
+![logo](imgs/openshiftsonar.png) 
 
 ## Introduction
 

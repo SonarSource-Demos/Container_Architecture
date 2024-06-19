@@ -18,4 +18,5 @@ This repository aims to:
 ## Contents
 
 - [**Architecture Overviews**](Comparative_Document/README.md): Detailed explanations of various container architectures across different cloud providers
+- [**SonarQube OpenShift**](Openshift/README.md): Deploying SonarQube in OpenShift.
 
