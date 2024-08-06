@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres 
+  namespace:
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+       - name: postgres
+         image: postgres:15.4
+         imagePullPolicy: "IfNotPresent"
+         ports:
+          - containerPort: 5432
+         envFrom:
+          - secretRef:
+              name: pgsecret
+          - configMapRef:
+              name: postgres-configmap  
+         volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: postgredb
+          - mountPath: /docker-entrypoint-initdb.d
+            name: initscript 
+      volumes:
+       - name: initscript
+         configMap:
+          name: pgsql-init
+       - name: postgredb
+         persistentVolumeClaim:
+          claimName: pgsql-data 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace:
+  annotations: 
+   service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+   service.beta.kubernetes.io/aws-load-balancer-type: nlb
+spec:
+  selector:
+    app: postgres
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
+  type: LoadBalancer

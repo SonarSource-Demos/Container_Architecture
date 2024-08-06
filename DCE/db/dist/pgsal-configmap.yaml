@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-configmap 
+  namespace:
+data:
+  POSTGRES_DB: postgres
+  PGDATA: /var/lib/postgresql/data/pgdata

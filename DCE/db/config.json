@@ -1,0 +1,12 @@
+{
+        "ClusterName" : "ClustWorkshop02",
+        "NSDataBase": "sonarqubedb", 
+        "PvcDBsize" : "10Gi",
+        "PGSecret":"dist/pgsecret.yaml",
+        "StorageClass": "managed-csi",
+        "Sonaruser": "sonarqube",
+        "Sonarpass": "Bench123",
+        "PGsql": "dist/pgsql.yaml",
+        "PGconf": "dist/pgsal-configmap.yaml",
+        "PGsvc": "postgres-service"
+}
