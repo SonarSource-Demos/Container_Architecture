@@ -26,8 +26,18 @@ server.
 ```bash
 :> git clone https://github.com/SonarSource-Demos/Container_Architecture.git Container_Architecture
 :> cd Container_Architecture/DCE
-k8s-hpa-sonarqubedce/DCE:> 
+Container_Architecture/DCE:> 
 ```
+
+### ✅ Check access to your cluster
+```bash
+Container_Architecture/DCE:> kubectl get node 
+NAME                               STATUS   ROLES    AGE   VERSION
+x.eu-central-1.compute.internal    Ready    worker   18m   v1.30.2-eks-1552ad0
+x.eu-central-1.compute.internal    Ready    worker   18m   v1.30.2-eks-1552ad0
+x.eu-central-1.compute.internal    Ready    worker   18m   v1.30.2-eks-1552ad0
+```
+We have a 3-nodes cluster
 
 ### ✅ Database deployment
 go to directory [db](db) (please read the README.md)

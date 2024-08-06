@@ -58,8 +58,8 @@ Before you get started, you’ll need to have these things:
 Run the following command to automatically install all the required modules based on the go.mod and go.sum files:
 
 ```bash
-k8s-hpa-sonarqubedce:> cd db
-k8s-hpa-sonarqubedce:/db> go mod download
+Container_Architecture/DCE:> cd db
+Container_Architecture/DCE/db> go mod download
 ``` 
 
 ## ✅ Deploying SonarQube
@@ -67,7 +67,7 @@ k8s-hpa-sonarqubedce:/db> go mod download
 Let’s deploy a SonarQube! When you’re ready, run **./cdk.sh deploy**
 
 ```bash
-k8s-hpa-sonarqubedce:/db> ./cdk.sh deploy
+Container_Architecture/DCE/db> ./cdk.sh deploy
 Deployment PostgreSQL Database :  Creating namespace... 
 ✅ Namespace databasepg1 created successfully
 Deployment PostgreSQL Database :  Creating PVC... 
@@ -85,7 +85,7 @@ Deployment PostgreSQL Database :  Creating ConfigMap DATA DB...
 Deployment PostgreSQL Database :  Deploy Postgresql deployment... 
 
 ✅ PostgreSQL Database Successful deployment External IP: k8s-database-postgres-20070ddde0-8cc1726b907c1328.elb.eu-central-1.amazonaws.com
-✅ JDBC URL : jdbc:postgresql://postgres-service.databasepg1.svc.cluster.local:5432/sonarqube?currentSchema=public - IP : 10.100.194.203
+✅ JDBC URL : jdbc:postgresql://postgres-service.sonarqubedb.svc.cluster.local:5432/sonarqube?currentSchema=public - IP : 10.X.X.X
 
 
 ``` 
@@ -94,27 +94,27 @@ You'll have to wait a few minutes for the External address to be bindered by DNS
 
 We can check if SonarQube is deployed :
 ```bash 
-k8s-hpa-sonarqubedce:/db>  kubectl get pods -n sonarqubedb
+Container_Architecture/DCE/db>  kubectl get pods -n sonarqubedb
 NAME                        READY   STATUS    RESTARTS   AGE
 postgres-784c5f86c9-vtkmx   1/1     Running   0         1m56s
 
-k8s-hpa-sonarqubedce:/db>
+Container_Architecture/DCE/db>
 ``` 
 
 We can check if database service running :
 
 ```bash 
-k8s-hpa-sonarqubedce:/db> kubectl get svc -n sonarqubedb
+Container_Architecture/DCE/db>kubectl get svc -n sonarqubedb
 NAME                        TYPE           CLUSTER-IP     EXTERNAL-IP              PORT(S)          AGE
 service/sonarqube-service   LoadBalancer   10.X.X.X       k8s-sonarqub-xxxx.com   9000:30621/TCP   3m17s
 
-k8s-hpa-sonarqubedce:/db>
+Container_Architecture/DCE/db>
 ```    
        
 😀  Now you can connect to the Database instance at the following commande :  
 
 ```bash 
- k8s-hpa-sonarqubedce:/db> kubectl -n sonarqubedb exec --stdin --tty postgres-784c5f86c9-vtkmx -- /usr/bin/psql -U sonarqube -c "SELECT datname FROM pg_database;"
+ Container_Architecture/DCE/db> kubectl -n sonarqubedb exec --stdin --tty postgres-784c5f86c9-vtkmx -- /usr/bin/psql -U sonarqube -c "SELECT datname FROM pg_database;"
 datname  
 -----------
  postgres
@@ -123,13 +123,13 @@ datname
  sonarqube
 (4 rows)
 
-k8s-hpa-sonarqubedce:/db>
+Container_Architecture/DCE/db>
 ```   
 
 You can also test your external connection to the database , if you have installed a PostgreSQL client tools at the following commande : 
 
 ```bash 
- k8s-hpa-sonarqubedce:/db> psql -h k8s-sonarqub-xxxx.com -U sonarqube -c "SELECT datname FROM pg_database;"
+ Container_Architecture/DCE/db>psql -h k8s-sonarqub-xxxx.com -U sonarqube -c "SELECT datname FROM pg_database;"
 Password for user sonarqube: 
   datname  
 -----------
@@ -139,7 +139,7 @@ Password for user sonarqube:
  sonarqube
 (4 rows)
 
-k8s-hpa-sonarqubedce:/db>
+Container_Architecture/DCE/db>
 ```  
    
 -----

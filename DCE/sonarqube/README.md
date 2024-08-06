@@ -36,20 +36,8 @@ Before you get started, you’ll need to have these things:
 ## ✅ Setup Environment
 
 
-▶️ Copy a template applicationnode-hpa.yaml in HELM chart template directory:
+▶️ values.yaml:
 
-```bash
-k8s-hpa-sonarqubedce:> cp charts/sonarqube-dce/templates/applicationnode-hpa.yaml helm-chart-sonarqube/charts/sonarqube-dce/templates/	
-``` 
-
-▶️ Buid HELM dependency:
-
-```bash
-k8s-hpa-sonarqubedce:> cd helm-chart-sonarqube/charts/sonarqube-dce
-k8s-hpa-sonarqubedce:/helm-chart-sonarqube/charts/sonarqube-dce> helm dependency build
-k8s-hpa-sonarqubedce:/helm-chart-sonarqube/charts/sonarqube-dce>cd ..
-k8s-hpa-sonarqubedce:/helm-chart-sonarqube/charts>
-``` 
 
 We will use the following values.yaml file (k8s-hpa-sonarqubedce/charts/values.yaml):
 
@@ -100,18 +88,18 @@ jdbcSecretPasswordKey: "jdbc-password"
 For populate a JDBCL URL you need a address of database service.
 Run this command to get Cluster IPaddress or External IP address for database service. 
 ```bash
-k8s-hpa-sonarqubedce:/helm-chart-sonarqube/charts> kubectl -n sonarqubedb get svc
+Container_Architecture/DCE/sonarqube> kubectl -n sonarqubedb get svc
 NAME               TYPE           CLUSTER-IP      EXTERNAL-IP                                                                        PORT(S)          AGE
 postgres-service   LoadBalancer   10.100.16.225   k8s-sonarqub-postgres-c24c80ab9f-0157658125734408.elb.eu-central-1.amazonaws.com   5432:30088/TCP   18h
-k8s-hpa-sonarqubedce:/helm-chart-sonarqube/charts>
+Container_Architecture/DCE/sonarqube> 
 ```
 And replace a X.X.X.X values by your respective values.
 
 ▶️ Copy a values.yaml file in chart directory:
 ```bash
-k8s-hpa-sonarqubedce:/helm-chart-sonarqube/charts> cp ../../charts/values.yaml .
-k8s-hpa-sonarqubedce:/helm-chart-sonarqube/charts> cd ../../
-k8s-hpa-sonarqubedce:>
+Container_Architecture/DCE/sonarqube>  cp ../../charts/values.yaml .
+Container_Architecture/DCE/sonarqube>  cd ../../
+Container_Architecture/DCE/sonarqube> 
 ``` 
 
 ## ✅ Deploying SonarQube
@@ -119,7 +107,7 @@ k8s-hpa-sonarqubedce:>
 Let’s deploy a SonarQube! When you’re ready, run **./cdk.sh deploy sonarqubedce**
 
 ```bash
-k8s-hpa-sonarqubedce:/sonarqube> ./cdk.sh deploy sonarqubedce
+Container_Architecture/DCE/sonarqube> ./cdk.sh deploy sonarqubedce
 Deploying SonarQube DCE in namespace sonarqubedce...
 Create Namespace sonarqubedce
 namespace/sonarqubedce created
@@ -139,7 +127,7 @@ NOTES:
   echo http://$SERVICE_IP:9000
 .....
 .....
-k8s-hpa-sonarqubedce:/sonarqube>
+Container_Architecture/DCE/sonarqube> 
 ``` 
 
 <br>
@@ -152,7 +140,7 @@ You'll have to wait a few minutes for the External address to be bindered by DNS
 
 ▶️ We can check if SonarQube is deployed and running :
 ```bash 
-k8s-hpa-sonarqubedce:/sonarqube> kubectl get all -n sonarqubedce
+Container_Architecture/DCE/sonarqube> kubectl get all -n sonarqubedce
 NAME                                                    READY   STATUS    RESTARTS      AGE
 pod/sonarqubedce02-sonarqube-dce-app-6f4bcbc87b-2xhr6   1/1     Running   4 (24m ago)   26m
 pod/sonarqubedce02-sonarqube-dce-app-6f4bcbc87b-gq65w   1/1     Running   4 (24m ago)   26m
@@ -177,7 +165,7 @@ statefulset.apps/sonarqubedce02-sonarqube-dce-search   3/3     26m
 
 NAME                                                                                   REFERENCE                                     TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
 horizontalpodautoscaler.autoscaling/sonarqubedce02-sonarqube-dce-applicationnode-hpa   Deployment/sonarqubedce02-sonarqube-dce-app   7%/50%    2         8         2          26m
-k8s-hpa-sonarqubedce:/sonarqube> 
+Container_Architecture/DCE/sonarqube> 
 ``` 
 
 -----
