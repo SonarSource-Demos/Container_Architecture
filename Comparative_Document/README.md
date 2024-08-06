@@ -164,8 +164,6 @@ The choice of container solution depends on your specific needs, management pref
 <tr style="border: 0px transparent">
 	<td style="border: 0px transparent"> <a href="../README.md" title="Home">⬅ Previous</a></td><td style="border: 0px transparent"><a href="../README.md" title="home">🏠</a></td>
 </tr>
-<tr style="border: 0px transparent">
-<td style="border: 0px transparent">HOME</td>
-</tr>
+
 
 </table>
