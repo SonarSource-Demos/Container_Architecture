@@ -66,7 +66,7 @@ All the template files are stored in this directory. When Helm processes charts,
 ---
 <table>
 <tr style="border: 0px transparent">
-	<td style="border: 0px transparent"> <a href="../README.md" title="Home">⬅ Previous</a></td><td style="border: 0px transparent"><a href="../README.md" title="home">🏠<a></td>
+	<td style="border: 0px transparent"> <a href="README.md" title="Home">⬅ Previous</a></td><td style="border: 0px transparent"><a href="../README.md" title="home">🏠<a></td>
 </tr>
 
 </table>
