@@ -170,3 +170,105 @@ replicaset.apps/kustomize-controller-6bc5d5b96       1         1         1      
 replicaset.apps/notification-controller-7f5cd7fdb8   1         1         1       8m55s
 replicaset.apps/source-controller-54c89dcbf6         1         1         1       8m55s
 ```
+
+🟢 Step 4: Add configurations for SonarQube
+
+We will create a **charts** directory (in our repository) that will contain a YAML file for the definition of the Helm repository for SonarQube.
+
+```bash 
+:flux-sonarqube> mkdir charts
+:flux-sonarqube> cd charts
+:flux-sonarqube/charts> 
+```
+
+In our example, the file is named **helm-repository.yaml**, and the content is as follows:
+```yaml
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: sonarqube-repo
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: https://SonarSource.github.io/helm-chart-sonarqube
+```
+
+We will also create a release directory (in our repository ) that will contain a YAML file for the Helm release. This file will include all the deployment options for SonarQube, as defined in the values.yaml of the SonarQube Helm chart.
+
+```bash 
+:flux-sonarqube> mkdir release
+:flux-sonarqube> cd release
+:flux-sonarqube/charts> 
+```
+In our example, the file is named **helm-repository.yaml**, and the content is as follows:
+
+```yaml
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sonarqube-dce
+  namespace: sqdce
+spec:
+  interval: 20m
+  driftDetection:
+    mode: enabled
+  timeout: 20m # match startup probe defined below
+  chart:
+    spec:
+      chart: sonarqube-dce
+      version: "10.5.1+2816"
+      sourceRef:
+        kind: HelmRepository
+        name: sonarqube-repo
+        namespace: flux-system
+  upgrade:
+    remediation:
+      remediateLastFailure: true
+  values:
+    service:
+      type: LoadBalancer
+      externalPort: 9000
+      internalPort: 9000
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    postgresql:
+      image:
+        tag: 11.22.0-debian-11-r4
+    searchNodes:
+      # Pod Disruption Budget for search nodes
+      podDisruptionBudget:
+        minAvailable: 1
+      persistence:
+        enabled: true
+    ApplicationNodes:
+      
+      # SQ takes a looong time to come live...
+      # Give it 20 min (60 sec delay, 1140 sec probing) to come live
+      startupProbe:
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        failureThreshold: 114
+      # Start probing readiness and liveness immediately after successful startup
+      # If SQ is unhealthy for more than 10 min, don't route traffic to it and restart it
+      readinessProbe:
+        initialDelaySeconds: 0
+        periodSeconds: 30
+        failureThreshold: 20
+      livenessProbe:
+        initialDelaySeconds: 0
+        periodSeconds: 30
+        failureThreshold: 20
+      existingJwtSecret: sonarqube-dce-auth-jwt
+    serviceAccount:
+      create: true
+    logging:
+      jsonOutput: true
+    account:
+      adminPasswordSecretName: sonarqube-dce-admin-pw
+    sonarProperties:
+      sonar.forceAuthentication: true
+      sonar.updatecenter.activate: false # Disable update center, plugins are managed via Helm chart values and pinned to specific version
+      # Log level
+      sonar.log.level: INFO
+```
