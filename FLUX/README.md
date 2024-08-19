@@ -47,7 +47,8 @@ Before you get started, you’ll need to have these things:
 
 ✅ A GitHub account (in our example), but Flux supports Git repos: AWS CodeCommit ,Azure DevOps Bitbucket Server and Data Center GitHub.com and GitHub Enterprise GitLab.com and GitLab Enterprise.
 
-✅ A PAT (Personal Access Token on GitHub)
+✅ A PAT ([Personal Access Token on GitHub](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) with all permissions under repo and workflow)
+
 
 ## What does this task do?
 
@@ -74,6 +75,7 @@ Create the GitHub repository via the command line using curl :
 :> curl -u "GITHUB_USERNAME:PAT" https://api.github.com/user/repos -d '{"name":"flux-sonarqube"}'
 
 ```
+Replace **GITHUB_USERNAME** with your GitHub username, **PAT** with your personal access token, **flux-sonarqube** is an example you can replace it with the desired name for your repository.
 
 Initialize a Git repository locally and link it to your new GitHub repository:
 ```bash 
@@ -89,13 +91,82 @@ git remote add origin https://github.com/GITHUB_USERNAME/flux-sonarqube.git
 Use the flux bootstrap github command to initialize FluxCD in your cluster and configure the GitHub repository to manage your infrastructure:
 
 ```bash 
+:> export GITHUB_TOKEN=<your-token>
+:>
 :> flux bootstrap github \
   --owner=GITHUB_USERNAME \
-  --repository=REPO_NAME \
+  --repository=flux-sonarqube \
   --branch=main \
   --path=clusters/my-cluster \
   --personal \
-  --token-auth
+  --token-auth \
+  --personal
 
 
+► connecting to github.com
+► cloning branch "main" from Git repository "https://github.com/XXXX/flux-sonarqube.git"
+✔ cloned repository
+► generating component manifests
+✔ generated component manifests
+✔ committed component manifests to "main" ("9ebfe1521b300e0dcabb29b54d87f10d8fef24db")
+► pushing component manifests to "https://github.com/XXXX/flux-sonarqube.git"
+► installing components in "flux-system" namespace
+✔ installed components
+✔ reconciled components
+► determining if source secret "flux-system/flux-system" exists
+► generating source secret
+► applying source secret "flux-system/flux-system"
+✔ reconciled source secret
+► generating sync manifests
+✔ generated sync manifests
+✔ committed sync manifests to "main" ("4ac7e17f9d7be860b2670fc57a02cf0a1b0bfe58")
+► pushing sync manifests to "https://github.com/XXX/flux-sonarqube.git"
+► applying sync manifests
+✔ reconciled sync configuration
+◎ waiting for GitRepository "flux-system/flux-system" to be reconciled
+✔ GitRepository reconciled successfully
+◎ waiting for Kustomization "flux-system/flux-system" to be reconciled
+✔ Kustomization reconciled successfully
+► confirming components are healthy
+✔ helm-controller: deployment ready
+✔ kustomize-controller: deployment ready
+✔ notification-controller: deployment ready
+✔ source-controller: deployment ready
+✔ all components are healthy
+```
+**--token-auth** is used to authenticate with the PAT.
+
+**--personal** indicates that you are using a personal repository (under your name) and not an enterprise one. If you are using an enterprise repository, you can remove this option.
+
+Replace **GITHUB_USERNAME** with your GitHub username, **your-token** with your personal access token, **my-cluster** with your cluster name .
+**flux-sonarqube** is an example you can replace it with the desired name for your repository.
+
+Check Installation :
+
+The installation created a flux-system namespace. To verify if Flux is properly deployed, run the following command:
+
+```bash 
+:> kubectl -n flux-system get all
+NAME                                           READY   STATUS    RESTARTS   AGE
+pod/helm-controller-76dff45854-lgfnz           1/1     Running   0          8m55s
+pod/kustomize-controller-6bc5d5b96-wjrt4       1/1     Running   0          8m55s
+pod/notification-controller-7f5cd7fdb8-2btn6   1/1     Running   0          8m55s
+pod/source-controller-54c89dcbf6-fswd5         1/1     Running   0          8m54s
+
+NAME                              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+service/notification-controller   ClusterIP   10.100.145.8     <none>        80/TCP    8m55s
+service/source-controller         ClusterIP   10.100.194.232   <none>        80/TCP    8m55s
+service/webhook-receiver          ClusterIP   10.100.33.74     <none>        80/TCP    8m55s
+
+NAME                                      READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/helm-controller           1/1     1            1           8m55s
+deployment.apps/kustomize-controller      1/1     1            1           8m55s
+deployment.apps/notification-controller   1/1     1            1           8m55s
+deployment.apps/source-controller         1/1     1            1           8m55s
+
+NAME                                                 DESIRED   CURRENT   READY   AGE
+replicaset.apps/helm-controller-76dff45854           1         1         1       8m55s
+replicaset.apps/kustomize-controller-6bc5d5b96       1         1         1       8m55s
+replicaset.apps/notification-controller-7f5cd7fdb8   1         1         1       8m55s
+replicaset.apps/source-controller-54c89dcbf6         1         1         1       8m55s
 ```
