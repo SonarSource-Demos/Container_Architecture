@@ -171,7 +171,9 @@ replicaset.apps/notification-controller-7f5cd7fdb8   1         1         1      
 replicaset.apps/source-controller-54c89dcbf6         1         1         1       8m55s
 ```
 
-🟢 Step 4: Add configurations for SonarQube
+## Configuration
+
+🟢 Step 1: Add configurations for SonarQube
 
 We will create a **charts** directory (in our repository) that will contain a YAML file for the definition of the Helm repository for SonarQube.
 
@@ -313,7 +315,7 @@ flux-sonarqube> helm repo update
 flux-sonarqube>
 ```
 
-🟢 Step 5: Prepare the environment to deploy sonarqube
+🟢 Step 2: Prepare the environment to deploy sonarqube
 
 Created a namespace :
 
@@ -330,3 +332,64 @@ Created a secret to store the application authentication JWT token :
 secret/sonarqube-dce-auth-jwt created
 :flux-sonarqube>
 ```
+
+##  Deploying SonarQube
+
+
+Add the files to the Git repository and push them to GitHub:
+
+```bash 
+:flux-sonarqube> git add *
+:flux-sonarqube> git commit -m "Add SonarQube Helm configurations"
+main 234de7b] Add SonarQube Helm configurations
+:flux-sonarqube> git push
+:flux-sonarqube>
+```
+
+After pushing the configurations to GitHub, FluxCD will detect the changes and apply the configurations to your Kubernetes cluster, thus deploying SonarQube.😀
+
+Let's check if the deployment is in progress :
+
+```bash 
+:flux-sonarqube> kubectl get helmrelease sonarqube-dce -n sqdce
+NAME            AGE   READY     STATUS
+sonarqube-dce   38s   Unknown   Running 'install' action with timeout of 20m0s
+:flux-sonarqube>
+```
+The deployment is in progress, after a few minutes the deployment is operational
+
+```bash 
+:flux-sonarqube> kubectl get helmrelease sonarqube-dce -n sqdce
+NAME            AGE     READY   STATUS
+sonarqube-dce   6m53s   True    Helm install succeeded for release sqdce/sonarqube-dce.v1 with chart sonarqube-dce@10.5.1+2816
+:flux-sonarqube>
+```
+Sonarqube version 10.5.1 is well deployed and operational from Flux.
+
+We can check if SonarQube is deployed :
+```bash 
+:flux-sonarqube> kubectl -n sqdce get pods
+NAME                                               READY   STATUS    RESTARTS      AGE
+sonarqube-dce-postgresql-0                         1/1     Running   0             6m
+sonarqube-dce-sonarqube-dce-app-599595fcf5-n6kzf   1/1     Running   4 (5m ago)    5m
+sonarqube-dce-sonarqube-dce-app-599595fcf5-txtnw   1/1     Running   4 (5m ago)    5m
+sonarqube-dce-sonarqube-dce-search-0               1/1     Running   0             5m
+sonarqube-dce-sonarqube-dce-search-1               1/1     Running   0             5m
+sonarqube-dce-sonarqube-dce-search-2               1/1     Running   0             5m
+:flux-sonarqube>
+```
+We can check if SonarQube service running :
+```bash 
+:flux-sonarqube> kubectl -n sqdce get svc
+NAME                                          TYPE           CLUSTER-IP       EXTERNAL-IP                                                                     PORT(S)             AGE
+sonarqube-dce-postgresql                      ClusterIP      10.100.188.175   <none>                                                                          5432/TCP            8m
+sonarqube-dce-postgresql-headless             ClusterIP      None             <none>                                                                          5432/TCP            8m
+sonarqube-dce-sonarqube-dce                   LoadBalancer   10.100.130.138   k8s-sonarqub-xxxx.com   9000:31628/TCP  8m
+sonarqube-dce-sonarqube-dce-headless          ClusterIP      None             <none>                                                                          9003/TCP            8m
+sonarqube-dce-sonarqube-dce-search            ClusterIP      10.100.223.207   <none>                                                                          9001/TCP,9002/TCP   8m
+sonarqube-dce-sonarqube-dce-search-headless   ClusterIP      None             <none>                                                                          9001/TCP,9002/TCP   8m
+:flux-sonarqube>
+```
+😀 Now you can connect to the SonarQube instance at the following url sample:
+
+http://k8s-sonarqub-xxxx.com:9000
