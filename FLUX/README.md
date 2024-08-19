@@ -43,12 +43,59 @@ Before you get started, you’ll need to have these things:
 
 ✅ helm installed
 
+✅ Kubernetes CLI (kubectl)
+
+✅ A GitHub account (in our example), but Flux supports Git repos: AWS CodeCommit ,Azure DevOps Bitbucket Server and Data Center GitHub.com and GitHub Enterprise GitLab.com and GitLab Enterprise.
+
+✅ A PAT (Personal Access Token on GitHub)
+
 ## What does this task do?
 
 - Create a k8s namespace for SonarQube DCE
 - Deployment SonarQube DCE with Flux
 - Upgrade SonarQube DCE with Flux
 
+The scenario we will use is as follows: we will install SonarQube DCE version 10.5.1 and then perform an upgrade to version 10.6.0.
 
 
 ## Installation
+
+🟢 The step 1 is to install the Flux CLI
+The Flux CLI is available as a binary executable for all major platforms, the binaries can be downloaded from [GitHub releases page](https://github.com/fluxcd/flux2/releases).
+
+With Homebrew for macOS and Linux:
+```bash 
+:> brew install fluxcd/tap/flux
+```
+🟢 The step 2 we will create a github repository: **flux-sonarqube** which will contain our flux configuration files for deployment.
+
+Create the GitHub repository via the command line using curl :
+```bash 
+:> curl -u "GITHUB_USERNAME:PAT" https://api.github.com/user/repos -d '{"name":"flux-sonarqube"}'
+
+```
+
+Initialize a Git repository locally and link it to your new GitHub repository:
+```bash 
+:> mkdir flux-sonarqube
+cd flux-sonarqube
+git init
+git remote add origin https://github.com/GITHUB_USERNAME/flux-sonarqube.git
+
+```
+
+🟢 The step 3 : Install FluxCD with GitHub bootstrap
+
+Use the flux bootstrap github command to initialize FluxCD in your cluster and configure the GitHub repository to manage your infrastructure:
+
+```bash 
+:> flux bootstrap github \
+  --owner=GITHUB_USERNAME \
+  --repository=REPO_NAME \
+  --branch=main \
+  --path=clusters/my-cluster \
+  --personal \
+  --token-auth
+
+
+```
