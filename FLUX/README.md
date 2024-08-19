@@ -193,7 +193,7 @@ spec:
   url: https://SonarSource.github.io/helm-chart-sonarqube
 ```
 
-We will also create a release directory (in our repository ) that will contain a YAML file for the Helm release. This file will include all the deployment options for SonarQube, as defined in the values.yaml of the SonarQube Helm chart.
+We will also create a release directory (in our repository ) that will contain a YAML file for the Helm release. This file will include all the deployment options for SonarQube, as defined in the [values.yaml](https://github.com/SonarSource/helm-chart-sonarqube/blob/master/charts/sonarqube-dce/values.yaml) of the SonarQube Helm chart.
 
 ```bash 
 :flux-sonarqube> mkdir release
@@ -207,7 +207,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: sonarqube-dce
-  namespace: sqdce
+  namespace: sqdce  # namespace SonarQube deployment
 spec:
   interval: 20m
   driftDetection:
@@ -216,10 +216,10 @@ spec:
   chart:
     spec:
       chart: sonarqube-dce
-      version: "10.5.1+2816"
+      version: "10.5.1+2816" #  SonarQube chart version
       sourceRef:
-        kind: HelmRepository
-        name: sonarqube-repo
+        kind: HelmRepository 
+        name: sonarqube-repo   # Reference on HelmRepository created with helm-repository.yaml file
         namespace: flux-system
   upgrade:
     remediation:
@@ -238,7 +238,7 @@ spec:
     searchNodes:
       # Pod Disruption Budget for search nodes
       podDisruptionBudget:
-        minAvailable: 1
+        minAvailable: 2
       persistence:
         enabled: true
     ApplicationNodes:
@@ -264,11 +264,69 @@ spec:
       create: true
     logging:
       jsonOutput: true
-    account:
-      adminPasswordSecretName: sonarqube-dce-admin-pw
     sonarProperties:
       sonar.forceAuthentication: true
       sonar.updatecenter.activate: false # Disable update center, plugins are managed via Helm chart values and pinned to specific version
       # Log level
       sonar.log.level: INFO
+```
+
+❗️ In this deployment, we are not using an external database, this is just to simplify the example. If you want to use an external database or a pre-existing instance in your cluster, you will need to set:
+```yaml
+postgresql: 
+  enabled: false
+```
+and reference the JDBC configuration as indicated in the [values.yaml](https://github.com/SonarSource/helm-chart-sonarqube/blob/master/charts/sonarqube-dce/values.yaml).Example :
+
+```yaml
+
+ jdbcOverwrite:
+      enable: true
+      # The JDBC url of the external DB
+      jdbcUrl: ${jdbc_url} # has to be changed according to environment
+      # The DB user that should be used for the JDBC connection
+      jdbcUsername: postgres
+      # Use pre-existing k8s secret containing the DB password
+      jdbcSecretName: sonarqube-dce-db-credentials-es
+      # and the secretValueKey of the password found within that secret
+      jdbcSecretPasswordKey: sonarqube_dce_db_instance_password
+```
+❗️ For PostgreSQL, we specified the version because if you have an ARM-based Kubernetes cluster, the default version deployed by the SonarQube Helm chart does not support ARM architecture.
+
+❗️ In this deployment, I am using a load balancer, and the settings are specific to an AWS environment.We have created a secret to store the application authentication JWT token.
+
+❗️ To determine the chart version of the SonarQube , you need to run the following command:
+
+```bash 
+:flux-sonarqube>  helm search repo sonarqube/sonarqube-dce --versions
+NAME                    CHART VERSION   APP VERSION     DESCRIPTION                                       
+sonarqube/sonarqube-dce 10.6.0+3033     10.6.0          SonarQube is a self-managed, automatic code rev...
+sonarqube/sonarqube-dce 10.5.1+2816     10.5.1          SonarQube is a self-managed, automatic code rev...
+sonarqube/sonarqube-dce 10.5.0+2748     10.5.0          SonarQube is a self-managed, automatic code rev...
+....
+flux-sonarqube>
+```
+❗️ Of course, before running this command, you need to have added the Helm repository to your Helm registry.
+```bash 
+flux-sonarqube> helm repo add sonarqube https://SonarSource.github.io/helm-chart-sonarqube
+flux-sonarqube> helm repo update
+flux-sonarqube>
+```
+
+🟢 Step 5: Prepare the environment to deploy sonarqube
+
+Created a namespace :
+
+```bash 
+:flux-sonarqube> kubectl create ns sqdce
+namespace/sqdce created
+flux-sonarqube>
+```
+Created a secret to store the application authentication JWT token :
+
+```bash 
+:flux-sonarqube> export JWT_SECRET=$(echo -n "your_secret" | openssl dgst -sha256 -hmac "your_key" -binary | base64)
+:flux-sonarqube> kubectl -n sqdce create secret generic sonarqube-dce-auth-jwt --from-literal=SONAR_AUTH_JWTBASE64HS256SECRET=${JWT_SECRET}
+secret/sonarqube-dce-auth-jwt created
+:flux-sonarqube>
 ```
