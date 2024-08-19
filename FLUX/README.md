@@ -1,5 +1,7 @@
 # Deploy SonarQube DCE on kubernetes cluster with FluxCD
 
+![Flow pods](imgs/helm-flucd1.jpg)
+
 ## Introduction
 
 FluxCD is an open-source tool that ensures that the state of a Kubernetes cluster matches the configuration stored in a Git repository. It automatically applies changes made to the repository to the cluster. FluxCD is a part of the CNCF incubating projects and it works through the use of custom resource definitions (CRDs), which extend Kubernetes APIs and offers additional features.
