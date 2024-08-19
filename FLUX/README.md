@@ -393,3 +393,14 @@ sonarqube-dce-sonarqube-dce-search-headless   ClusterIP      None             <n
 😀 Now you can connect to the SonarQube instance at the following url sample:
 
 http://k8s-sonarqub-xxxx.com:9000
+
+![Flow pods](imgs/sonar.png)
+
+
+-----
+<table>
+<tr style="border: 0px transparent">
+    <td style="border: 0px transparent"> <a href="../README.md" title="PostgreSQL database">⬅ Previous</a></td><td style="border: 0px transparent"><a href="upgrade.md" title="Upgrade SonarQube DCE with FluxCD">Next ➡</a></td><td style="border: 0px transparent"><a href="../README.md" title="home">🏠</a></td>
+</tr>
+
+</table>
