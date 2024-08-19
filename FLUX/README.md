@@ -1,6 +1,6 @@
 # Deploy SonarQube DCE on kubernetes cluster with FluxCD
 
-![Flow pods](imgs/helm-flucd1.jpg)
+![Flow pods](imgs/helm-fluxcd1.jpg)
 
 ## Introduction
 
@@ -33,3 +33,21 @@ Using FluxCD to deploy SonarQube offers several advantages, especially within th
     Helm Charts Support: If SonarQube is deployed via Helm Charts, FluxCD can manage the versions and updates of the charts, simplifying dependency and configuration management.
 
 In summary, using FluxCD to deploy SonarQube provides automated, secure, and scalable deployment management, while integrating GitOps best practices for simplified Kubernetes infrastructure management.
+
+
+## Prerequisites
+
+Before you get started, you’ll need to have these things:
+
+✅ An EKS Cluster runnig and configured
+
+✅ helm installed
+
+## What does this task do?
+
+- Create a k8s namespace for SonarQube DCE
+- Deployment SonarQube DCE 
+
+
+
+## Installation
