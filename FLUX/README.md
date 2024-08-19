@@ -1,4 +1,4 @@
-# Deploy SonarQube DCE on kubernetes cluster with FluxCD
+# Deploy SonarQube DCE on kubernetes cluster with FluxCD Part1
 
 ![Flow pods](imgs/helm-fluxcd1.jpg)
 
@@ -315,6 +315,17 @@ flux-sonarqube> helm repo update
 flux-sonarqube>
 ```
 
+The structure of your repository is as follows :
+
+```bash 
+flux-sonarqube/
+├── charts/
+│   └── helm-repository.yaml
+└── releases/
+    └── sonarqube-dce.yaml
+
+```
+
 🟢 Step 2: Prepare the environment to deploy sonarqube
 
 Created a namespace :
@@ -395,6 +406,43 @@ sonarqube-dce-sonarqube-dce-search-headless   ClusterIP      None             <n
 http://k8s-sonarqub-xxxx.com:9000
 
 ![Flow pods](imgs/sonar.png)
+
+----
+## Troubleshooting
+
+✳️ Check resource status:
+
+Run the following commands to check the status of resources in the flux-system and sqdce namespace
+```bash 
+:flux-sonarqube>  kubectl get helmrepositories -n flux-system
+NAME             URL                                                  AGE    READY   STATUS
+sonarqube-repo   https://SonarSource.github.io/helm-chart-sonarqube   155m   True    stored artifact: revision 'sha256:7c9e87e89ef02e31c64358103d6379871f3a55faf64c852102b36dfad18b98ac'
+:flux-sonarqube> 
+:flux-sonarqube> kubectl get helmreleases -n sqdce      
+NAME            AGE    READY   STATUS
+sonarqube-dce   148m   True    Helm install succeeded for release sqdce/sonarqube-dce.v1 with chart sonarqube-dce@10.5.1+2816
+```
+
+✳️ Show flux warning events
+```bash 
+:flux-sonarqube> kubectl get events -n flux-system --field-selector type=Warning
+```
+
+✳️ Show all Flux objects (check for Ready=True and Suspend=False)
+```bash 
+:flux-sonarqube> flux get sources all -A
+```
+
+----
+✅ Ressources
+
+🏠 [SonarQube HELM](https://github.com/SonarSource/helm-chart-sonarqube/tree/master/charts)
+
+🏠 [Fluxcd](https://v2-0.docs.fluxcd.io/flux/installation/)
+
+🏠 [Flux CLI](https://v2-0.docs.fluxcd.io/flux/cmd/)
+
+🏠 [Troubleshooting](https://fluxcd.io/flux/cheatsheets/troubleshooting/)
 
 
 -----
