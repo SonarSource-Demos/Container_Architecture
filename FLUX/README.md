@@ -46,7 +46,8 @@ Before you get started, you’ll need to have these things:
 ## What does this task do?
 
 - Create a k8s namespace for SonarQube DCE
-- Deployment SonarQube DCE 
+- Deployment SonarQube DCE with Flux
+- Upgrade SonarQube DCE with Flux
 
 
 
