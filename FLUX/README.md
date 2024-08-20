@@ -325,12 +325,13 @@ flux-sonarqube>
 The structure of your repository is as follows :
 
 ```bash 
-flux-sonarqube/
-├── charts/
-│   └── helm-repository.yaml
-└── releases/
-    └── sonarqube-dce.yaml
-
+clusters/
+└── ClustWorkshop03/
+    ├── charts/
+    │   └── helm-repository.yaml
+    │   
+    └── releases/
+        └── sonarqube-dce.yaml
 ```
 
 🟢 Step 2: Prepare the environment to deploy sonarqube
@@ -470,6 +471,8 @@ sonarqube-dce   148m   True    Helm install succeeded for release sqdce/sonarqub
 🏠 [Flux CLI](https://v2-0.docs.fluxcd.io/flux/cmd/)
 
 🏠 [Troubleshooting](https://fluxcd.io/flux/cheatsheets/troubleshooting/)
+
+ 📌 You will find the YAML files used for this deployment in the **manifests** directory.
 
 
 -----

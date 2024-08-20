@@ -173,7 +173,14 @@ For clean up platform please run this command :
 :flux-sonarqube> flux uninstall --namespace=flux-system
 ```
 
+----
 
+## Conclusion
+
+As you can see, it is quite straightforward to configure and use FluxCD to deploy and upgrade SonarQube.In conclusion, adopting FluxCD with the Helm provider for SonarQube deployment not only enhances the CI/CD process but also helps maintain high code quality across customers projects.
+
+
+![upgrade](../imgs/grommet1.png)
 -----
 <table>
 <tr style="border: 0px transparent">

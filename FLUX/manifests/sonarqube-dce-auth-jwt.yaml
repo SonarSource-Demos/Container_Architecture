@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  SONAR_AUTH_JWTBASE64HS256SECRET: RVNhYVl4Q3FsaWRja0lxS3dmVUs1cHhvSnFPSGJkdEhDOHQvVHFDNk5lbz0=
+kind: Secret
+metadata:
+  creationTimestamp: "2024-08-14T10:38:10Z"
+  name: sonarqube-dce-auth-jwt
+  namespace: sqdce
+  resourceVersion: "2302852"
+  uid: 5d5cb9e1-5188-4234-9b7e-3a450c964239
+type: Opaque
