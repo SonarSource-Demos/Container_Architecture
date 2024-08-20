@@ -175,12 +175,19 @@ replicaset.apps/source-controller-54c89dcbf6         1         1         1      
 
 🟢 Step 1: Add configurations for SonarQube
 
+We will create a directory **clusters/NAME_OF_YOUR_CLUSTER** (in our repository ) which will contain the necessary configuration files.
+```bash 
+:flux-sonarqube> mkdir -p clusters/ClustWorkshop03
+:flux-sonarqube> 
+```
+
+
 We will create a **charts** directory (in our repository) that will contain a YAML file for the definition of the Helm repository for SonarQube.
 
 ```bash 
-:flux-sonarqube> mkdir charts
-:flux-sonarqube> cd charts
-:flux-sonarqube/charts> 
+:flux-sonarqube> mkdir -p clusters/ClustWorkshop03/charts
+:flux-sonarqube> cd clusters/ClustWorkshop03/charts
+:flux-sonarqube/clusters/ClustWorkshop03/charts> 
 ```
 
 In our example, the file is named **helm-repository.yaml**, and the content is as follows:
@@ -198,9 +205,9 @@ spec:
 We will also create a release directory (in our repository ) that will contain a YAML file for the Helm release. This file will include all the deployment options for SonarQube, as defined in the [values.yaml](https://github.com/SonarSource/helm-chart-sonarqube/blob/master/charts/sonarqube-dce/values.yaml) of the SonarQube Helm chart.
 
 ```bash 
-:flux-sonarqube> mkdir release
-:flux-sonarqube> cd release
-:flux-sonarqube/charts> 
+:flux-sonarqube> mkdir -p clusters/ClustWorkshop03/release
+:flux-sonarqube> cd clusters/ClustWorkshop03/release
+:flux-sonarqube/clusters/ClustWorkshop03/release> 
 ```
 In our example, the file is named **helm-repository.yaml**, and the content is as follows:
 
@@ -391,14 +398,10 @@ sonarqube-dce-sonarqube-dce-search-2               1/1     Running   0          
 ```
 We can check if SonarQube service running :
 ```bash 
-:flux-sonarqube> kubectl -n sqdce get svc
-NAME                                          TYPE           CLUSTER-IP       EXTERNAL-IP                                                                     PORT(S)             AGE
-sonarqube-dce-postgresql                      ClusterIP      10.100.188.175   <none>                                                                          5432/TCP            8m
-sonarqube-dce-postgresql-headless             ClusterIP      None             <none>                                                                          5432/TCP            8m
-sonarqube-dce-sonarqube-dce                   LoadBalancer   10.100.130.138   k8s-sonarqub-xxxx.com   9000:31628/TCP  8m
-sonarqube-dce-sonarqube-dce-headless          ClusterIP      None             <none>                                                                          9003/TCP            8m
-sonarqube-dce-sonarqube-dce-search            ClusterIP      10.100.223.207   <none>                                                                          9001/TCP,9002/TCP   8m
-sonarqube-dce-sonarqube-dce-search-headless   ClusterIP      None             <none>                                                                          9001/TCP,9002/TCP   8m
+:flux-sonarqube> kubectl -n sqdce get svc sonarqube-dce-sonarqube-dce
+
+NAME                          TYPE           CLUSTER-IP      EXTERNAL-IP                   PORT(S)      AGE
+sonarqube-dce-sonarqube-dce   LoadBalancer   10.X.X.X    k8s-sqdce-sonarqub-xxxx.com   9000:31935/TCP   111m
 :flux-sonarqube>
 ```
 😀 Now you can connect to the SonarQube instance at the following url sample:
@@ -433,6 +436,30 @@ sonarqube-dce   148m   True    Helm install succeeded for release sqdce/sonarqub
 :flux-sonarqube> flux get sources all -A
 ```
 
+✳️ Check GitOps Source Status
+```bash 
+:flux-sonarqube> flux check
+```
+
+✳️ Check HelmController logs
+```bash 
+:flux-sonarqube> kubectl logs -n flux-system deploy/helm-controller
+```
+
+✳️ Force synchronization
+```bash 
+:flux-sonarqube> flux reconcile kustomization flux-system -n flux-system
+```
+
+✳️ Use the following command to see the details of your Kustomization :
+```bash 
+:flux-sonarqube> kubectl describe kustomization flux-system -n flux-system
+```
+✳️ Check a status of kustomizations
+```bash 
+:flux-sonarqube> kubectl get kustomizations -n flux-system
+```
+
 ----
 ✅ Ressources
 
@@ -448,7 +475,7 @@ sonarqube-dce   148m   True    Helm install succeeded for release sqdce/sonarqub
 -----
 <table>
 <tr style="border: 0px transparent">
-    <td style="border: 0px transparent"> <a href="../README.md" title="PostgreSQL database">⬅ Previous</a></td><td style="border: 0px transparent"><a href="upgrade.md" title="Upgrade SonarQube DCE with FluxCD">Next ➡</a></td><td style="border: 0px transparent"><a href="../README.md" title="home">🏠</a></td>
+    <td style="border: 0px transparent"> <a href="../README.md" title="home">⬅ Previous</a></td><td style="border: 0px transparent"><a href="upgrade.md" title="Upgrade SonarQube DCE with FluxCD part 2">Next ➡</a></td><td style="border: 0px transparent"><a href="../README.md" title="home">🏠</a></td>
 </tr>
 
 </table>
