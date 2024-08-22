@@ -20,6 +20,7 @@ This repository aims to:
 - [**Architecture Overviews**](Comparative_Document/README.md): Detailed explanations of various container architectures across different cloud providers
 - [**SonarQube OpenShift**](Openshift/README.md): Deploying SonarQube in OpenShift.
 - [**Securing SonarQube**](https://github.com/SonarSource-Demos/k8s-helm-sq-key): Encrypting JDBC Passwords with AES/GCM Key in Kubernetes.
+- [**SonarQube on AWS ECS Fargate**](https://github.com/colussim/AWS_ECS_FARGATE_SONARQUBE) Deploying SonarQube on AWS ECS Fargate.
 - [**SonarQube DCE on K8s**](DCE/README.md): Deploying SonarQube DCE in Kubernetes Cluster with a custom values.yaml file.
 - [**SonarQube DCE on K8s with FluxCD**](FLUX/README.md): Deploy SonarQube DCE on kubernetes cluster with FluxCD.
 
