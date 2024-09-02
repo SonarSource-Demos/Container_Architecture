@@ -1,6 +1,6 @@
 # Deploy SonarQube DCE on kubernetes cluster with Argo CD part 2
 
-![Flow pods](imgs/argocd.jpg)
+![Flow pods](imgs/argocd1.jpg)
 
 Login to Argo CD: Ensure you are logged into your Argo CD server.
 

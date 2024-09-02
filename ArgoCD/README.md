@@ -1,6 +1,6 @@
 # Deploy SonarQube DCE on kubernetes cluster with Argo CD part 1
 
-![Flow pods](imgs/argocd.jpg)
+![Flow pods](imgs/argocd1.jpg)
 
 ## Introduction
 
@@ -316,6 +316,14 @@ WARNING: server certificate had error: tls: failed to verify certificate: x509: 
 application 'sonarqube' created  
 ```
 
+
+
+    <sonarqube>: Your desired application name.
+    <DEST_SERVER>: Typically, this will be https://kubernetes.default.svc for a default cluster.
+    <DEST_NAMESPACE>: The namespace where you want to deploy SonarQube.
+    <--helm-set>: Customs values.yaml for sonarqube deployment.
+
+
 Your app should now appear when running argocd app list:
 
 ```bash 
@@ -358,7 +366,7 @@ sonarqube-dce-sonarqube-dce-app-599595fcf5-txtnw   1/1     Running   4 (5m ago) 
 sonarqube-dce-sonarqube-dce-search-0               1/1     Running   0             5m
 sonarqube-dce-sonarqube-dce-search-1               1/1     Running   0             5m
 sonarqube-dce-sonarqube-dce-search-2               1/1     Running   0             5m
-:flux-sonarqube>
+:>
 ```
 We can check if SonarQube service running :
 ```bash 
@@ -388,7 +396,7 @@ Run the following commands to check the status of resources in the argocd namesp
 
 ✳️ Show Argo CD events 
 ```bash 
-:flux-sonarqube> kubectl get events -n argocd 
+:> kubectl get events -n argocd 
 ```
 
 
@@ -403,7 +411,7 @@ Run the following commands to check the status of resources in the argocd namesp
 
 🏠 [Troubleshooting](https://argo-cd.readthedocs.io/en/stable/operator-manual/troubleshooting/)
 
- 📌 You will find the YAML files used for this deployment in the **manifests** directory.
+
 
 
 -----
